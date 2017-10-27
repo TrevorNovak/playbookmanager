@@ -26,8 +26,8 @@ Proposed Tasks:
     - [ ] Playbook API
     - [ ] Web GUI
     - [ ] STIX Ingestion and Processing Engine
-   [ ] Testing
-     [ ] Unit Tests
-     [ ] Integration Tests
-     [ ] Acceptance Testing
-   [ ] Beta Release
+   - [ ] Testing
+     - [ ] Unit Tests
+     - [ ] Integration Tests
+     - [ ] Acceptance Testing
+   - [ ] Beta Release

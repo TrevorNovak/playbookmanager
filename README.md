@@ -19,10 +19,10 @@ We have identified four main components that shall comprise the Adversarial Play
 
 Proposed Tasks:
   
-  *[] Research and Design
+  * [] Research and Design
   
-  *[] Prototype and Implementation
-    *[] ElasticSearch
+  * [] Prototype and Implementation
+    * [] ElasticSearch
     *[] Playbook API
     *[] Web GUI
     [] STIX Ingestion and Processing Engine

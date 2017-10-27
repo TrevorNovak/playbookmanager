@@ -2,7 +2,7 @@
 Open Source Repository for the Palo Alto Playbook Manager Application.
 
 
-## Desription
+## Description
  
 The objective of this project is to create a system that stores adversary playbooks
 and is capable of transferring data between different users. The project accomplishes
@@ -19,11 +19,12 @@ We have identified four main components that shall comprise the Adversarial Play
 
 Proposed Tasks:
   
-  [] Research and Design
-  [] Prototype and Implementation
-    [] ElasticSearch
-    [] Playbook API
-    [] Web GUI
+  *[] Research and Design
+  
+  *[] Prototype and Implementation
+    *[] ElasticSearch
+    *[] Playbook API
+    *[] Web GUI
     [] STIX Ingestion and Processing Engine
   [] Testing
     [] Unit Tests

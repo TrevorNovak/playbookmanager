@@ -17,7 +17,7 @@ We have identified four main components that shall comprise the Adversarial Play
     3) STIX Processor
     4) Web Interface
 
-## Proposed Tasks:
+## Proposed Tasks
   
   - [ ] Research and Design
   

@@ -19,7 +19,7 @@ We have identified four main components that shall comprise the Adversarial Play
 
 ## Proposed Tasks
   
-  - [ ] Research and Design
+  - [x] Research and Design
   
   - [ ] Prototype and Implementation
     - [ ] ElasticSearch

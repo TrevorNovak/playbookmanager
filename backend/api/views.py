@@ -8,15 +8,25 @@ from django.contrib.auth.models import User
 
 
 class UserList(generics.ListAPIView):
+    """
+    Returns a list of Users.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    """
+    Returns a user profile.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class PlaybookList(generics.ListCreateAPIView):
+    """
+    Create and get a list of Playbooks.
+    """
+
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Playbook.objects.all()
     serializer_class = PlaybookSerializer
@@ -25,6 +35,9 @@ class PlaybookList(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 class PlaybookDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Create, edit, view an individual Playbook.
+    """
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                       IsOwnerOrReadOnly,)
     queryset = Playbook.objects.all()

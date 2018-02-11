@@ -7,6 +7,9 @@ class MessageSerializer(serializers.Serializer):
     message = serializers.CharField()
 
 class PlaybookSerializer(serializers.Serializer):
+    """
+    The Playbook serializer serializes the Playbook model into JSON.
+    """
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(required=False, allow_blank=True, max_length=100)
     body = serializers.CharField(style={'base_template': 'textarea.html'})
@@ -26,6 +29,9 @@ class PlaybookSerializer(serializers.Serializer):
         return instance
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    The Playbook serializer serializes the Playbook model into JSON.
+    """
     playbooks = serializers.PrimaryKeyRelatedField(many=True, queryset=Playbook.objects.all())
 
     class Meta:

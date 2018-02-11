@@ -10,7 +10,6 @@ from rest_framework_simplejwt.views import (
 from rest_framework.authtoken import views as drf_views
 from rest_framework import views, serializers, status
 from rest_framework.urlpatterns import format_suffix_patterns
-# from api.serializers import MessageSerializer, PlaybookSerializer
 from api import views
 
 urlpatterns = [

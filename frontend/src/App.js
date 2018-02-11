@@ -11,7 +11,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="title-page">
         <h2>Playbook Manager</h2>
         <p>
           {this.props.message}

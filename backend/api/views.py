@@ -2,6 +2,8 @@ from api.models import Playbook
 from api.serializers import PlaybookSerializer, UserSerializer
 from rest_framework import generics, views, permissions
 from api.permissions import IsOwnerOrReadOnly
+from api.serializers import MessageSerializer, PlaybookSerializer
+
 from django.contrib.auth.models import User
 
 
@@ -13,7 +15,6 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
 
 class PlaybookList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

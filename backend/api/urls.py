@@ -15,16 +15,15 @@ from api import views
 urlpatterns = [
     url(r'^$', generic.RedirectView.as_view(
          url='/api/', permanent=False)),
-    url(r'^api/$', get_schema_view()),
-    url(r'^api/auth/', include(
+    url(r'^api/v1/auth/', include(
         'rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
-    url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
-    url(r'^api/echo/$', views.EchoView.as_view()),
-    url(r'^api/playbooks/$', views.PlaybookList.as_view()),
-    url(r'^api/playbooks/(?P<pk>[0-9]+)$', views.PlaybookDetail.as_view()),
-    url(r'^api/users/$', views.UserList.as_view()),
-    url(r'^api/users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^api/v1/auth/token/obtain/$', TokenObtainPairView.as_view()),
+    url(r'^api/v1/auth/token/refresh/$', TokenRefreshView.as_view()),
+    url(r'^api/v1/echo/$', views.EchoView.as_view()),
+    url(r'^api/v1/playbooks/$', views.PlaybookList.as_view()),
+    url(r'^api/v1/playbooks/(?P<pk>[0-9]+)$', views.PlaybookDetail.as_view()),
+    url(r'^api/v1/users/$', views.UserList.as_view()),
+    url(r'^api/v1/users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -12,7 +12,9 @@ class App extends Component {
   render() {
     return (
       <div className="title-page">
-        <h2>Playbook Manager</h2>
+        <div class="title">
+        Playbook Manager
+        </div>
         <p>
           {this.props.message}
         </p>

@@ -10,7 +10,7 @@ export const TOKEN_FAILURE = '@@jwt/TOKEN_FAILURE';
 
 export const login = (username, password) => ({
     [RSAA]: {
-        endpoint: '/api/auth/token/obtain/',
+        endpoint: '/api/v1/auth/token/obtain/',
         method: 'POST',
         body: JSON.stringify({username, password}),
         headers: { 'Content-Type': 'application/json' },
@@ -22,7 +22,7 @@ export const login = (username, password) => ({
 
 export const refreshAccessToken = (token) => ({
     [RSAA]: {
-        endpoint: '/api/auth/token/refresh/',
+        endpoint: '/api/v1/auth/token/refresh/',
         method: 'POST',
         body: JSON.stringify({refresh: token}),
         headers: { 'Content-Type': 'application/json' },

@@ -35,7 +35,7 @@ export default class LoginForm extends Component {
     return (
       <Jumbotron className="container">
         <Form onSubmit={this.onSubmit}>
-          <h1>Authentication</h1>
+          <h1>STIX Playbook Manager Authentication</h1>
           {errors.non_field_errors?<Alert color="danger">{errors.non_field_errors}</Alert>:""}
           <TextInput name="username" label="Username" error={errors.username} getRef={input => this.primaryInput = input} onChange={this.handleInputChange}/>
           <TextInput name="password" label="Password" error={errors.password} type="password" onChange={this.handleInputChange}/>

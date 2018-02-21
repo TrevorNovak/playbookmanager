@@ -6,7 +6,8 @@ width: 100%;
 display: flex;
 }
 body {
-background: linear-gradient(0deg, #FFF58E 80%, #11CEF0 60%);
+/*background: linear-gradient(120deg, #FFF58E 80%, #11CEF0 60%);*/
+background: linear-gradient(120deg, #11CEF0 80%, #FFF58E 60%);
 background-repeat: no-repeat;
 background-attachment: fixed;
 }

@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^api/v1/playbooks/(?P<pk>[0-9]+)$', views.PlaybookDetail.as_view()),
     url(r'^api/v1/users/$', views.UserList.as_view()),
     url(r'^api/v1/users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    # url(r'^api/v1/schema/$', views.schema_view),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

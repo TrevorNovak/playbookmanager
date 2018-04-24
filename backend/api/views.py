@@ -6,7 +6,17 @@ from api.serializers import MessageSerializer, PlaybookSerializer
 
 from django.contrib.auth.models import User
 
+##### TEMPLATE VIEWS ########
 
+def detail(request, playbook_id):
+    return HttpResponse("You're looking at playbook %s." % playbook_id)
+
+def results(request, playbook_id):
+    response = "You're looking at a list of playbooks %s."
+    return HttpResponse(response % playbook_id)
+
+
+##### REST API VIEWS ########
 class UserList(generics.ListAPIView):
     """
     Returns a list of Users.

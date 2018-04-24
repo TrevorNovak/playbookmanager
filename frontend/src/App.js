@@ -1,29 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-
-import {echo} from './actions/echo'
-import {serverMessage} from './reducers'
+import TopicsScreen from './containers/PlaybooksScreen';
+import './App.css';
 
 class App extends Component {
-  componentDidMount() {
-      this.props.fetchMessage('Hi!')
-  }
-
   render() {
     return (
-      <div className="title-page">
-        <div class="title">
-        Playbook Manager
-        </div>
-        <p>
-          {this.props.message}
-        </p>
+      <div className="App">
+        <PlaybooksScreen />
       </div>
     );
   }
 }
 
-export default connect(
-  state => ({ message: serverMessage(state) }),
-  { fetchMessage: echo }
-)(App);
+export default App;

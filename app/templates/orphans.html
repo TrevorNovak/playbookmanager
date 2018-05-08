@@ -1,0 +1,62 @@
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "http://localhost:5000/playbookmanager/api/v1/attack-patterns/1"
+    }).then(function(data) {
+       $('.attack-pattern-name').append(data[0].objects[0].name);
+       $('.attack-pattern-desc').append(data[0].objects[0].description);
+       $('.attack-pattern-url').append(data[0].objects[0]['external_references'][0]['url']);
+    });
+});
+</script>
+
+
+<div class="timeline_btn btn btn-report" onclick="" style="">Logon Scripts</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Bootkit</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Plist Modification</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">HISTCONTROL</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Screensaver</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Disabling Security Tools</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Login Item</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Indirect Command Execution</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">Source</div>
+<div class="timeline_btn btn btn-report" onclick="" style="">.bash_profile and .bashrc</div>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Dynamically add/remove items from list - JavaScript</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      window.jQuery||document.write('<script src="{{ url_for('static', filename = 'js/jquery.js')}} ">\x3C/script>')
+    </script>
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {
+        {request.script_root|tojson|safe}
+      };
+    </script>
+  </head>
+
+  <body>
+
+    <a href="_add_pattern"><button>test</button></a>
+
+    <script> $(document).on("ready", var a = prints());</script>
+
+    <script>document.write(a);</script>
+
+    <script src="static/js/create.js"> </script>
+
+
+    </script>
+
+  </body>
+
+</html>
+
+
+
+<form name="search" action="/_search/" method="get">

@@ -1,0 +1,86 @@
+<html>
+
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/themes.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Jura:300|Rajdhani|Inconsolata" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+      <div class="box header">
+        <span>PLAYBOOK MANAGER</span>
+      </div>
+
+      <div class="box sidebar">
+        <img src="static/images/u42logo.png">
+        <span>NAVIGATION</span>
+        <br>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">HOME</div>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">LOGIN</div>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">VIEWER</div>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">CREATOR</div>
+        </br>
+      </div>
+      <!-- <form method=post>
+          <div class="search">p>
+          {{ form.search }}
+          <p><input type=submit value=Search>
+          </div>
+        </form>
+
+        action="/_search/"
+     -->
+      <div class="box inside">
+        <div class="box add-ap">
+          <div class="search">
+            <!-- <form name="search" method=post>
+              <input type="text" class="input-search" placeholder="Search for Attack Pattern... " name="attackpattern">
+            </form> -->
+            {% from "_formhelpers.html" import render_field %}
+            <form method=post>
+                <!-- <div class="search"><p> -->
+                {{ form.search }}
+              <p><input type=submit value=Search>
+              <!-- </div> -->
+            </form>
+          </div>
+          <div class="pattern-display">
+            {% if sections %}
+            {{ sections[0].name }}
+            </br>
+            </br>
+            {% for description in sections[0].description %} {{ description }}
+            </br>
+            {% endfor %}
+            </br>
+            <a href="{{ sections.url }}">{{ sections[0].url }}</a>
+            {% endif %}
+          </div>
+          </br>
+            <a href="{{ url_for('add_attack_pattern') }}"><div class="ap-button"><center>ADD ATTACK PATTERN TO PLAYBOOK</div></center></a>
+          </br>
+          </br>
+        </div>
+        <div class="box timeline">
+          <h3>Added Attack Patterns</h3>
+          {% for i in range(0, length) %}
+            <a href="/_remove_pattern/{{i}}"><div class="timeline_btn btn btn-report" style="">{{ playbook[i].name }}</div></a>
+          {% endfor %}
+          </br>
+          <a href="/_create_playbook">
+            <input type="button" value="CREATE NEW PLAYBOOK" class="pb-button">
+          </a>
+        </div>
+      </div>
+
+      <div class="box footer">
+        Created by Palo Alto Networks - Unit 42 <br><a style="color:#95989a" href="https://attack.mitre.org/wiki/Main_Page">Mitre ATT&amp;CK™</a> | <a style="color:#95989a" href="https://oasis-open.github.io/cti-documentation/stix/intro">STIX 2.0</a>
+      </div>
+    </div>
+
+    <script src="js/index.js"></script>
+  </body>
+
+</html>

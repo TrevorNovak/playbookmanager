@@ -38,3 +38,20 @@ function iter() {
     document.write(playbook[i]);
   }
 }
+
+curl -X PUT "localhost:9200/my_index/_mapping/attack-pattern" -H 'Content-Type: application/json' -d'
+{
+    "attack_pattern": {
+        "properties": {
+            "name": {
+                "type":     "text",
+                "analyzer": "autocomplete"
+            },
+            "description": {
+                "type":     "text",
+                "analyzer": "autocomplete"
+            }
+        }
+    }
+}
+'

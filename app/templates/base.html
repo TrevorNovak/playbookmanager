@@ -1,0 +1,28 @@
+<html>
+    <head>
+      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/themes.css') }}">
+      <link href="https://fonts.googleapis.com/css?family=Jura:300|Rajdhani|Inconsolata" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      {% if title %}
+      <title>{{ title }} - Playbook Manager</title>
+      {% else %}
+      <title>Welcome to the Playbook Manager</title>
+      {% endif %}
+    </head>
+    <body>
+        Playbook Manager:
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('login') }}">Login</a>
+      <hr>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+  </body>
+</html>

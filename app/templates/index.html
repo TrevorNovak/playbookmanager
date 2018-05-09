@@ -1,0 +1,76 @@
+<html>
+
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/themes.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Jura:300|Rajdhani|Inconsolata" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="box header">
+        <span>PLAYBOOK MANAGER</span>
+      </div>
+
+      <div class="box sidebar">
+        <img src="{{ url_for('static', filename='images/u42logo.png') }}">
+        <span>NAVIGATION</span>
+        <br>
+        <div class="btn playbook" id="playbook_oilrig" pb_file="oilrig.json" onclick="">HOME</div>
+        <div class="btn playbook" id="playbook_oilrig" pb_file="oilrig.json" onclick="">LOGIN</div>
+        <div class="btn playbook" id="playbook_oilrig" pb_file="oilrig.json" onclick="">VIEWER</div>
+        <div class="btn playbook" id="playbook_oilrig" pb_file="oilrig.json" onclick="">CREATOR</div>
+        </br>
+      </div>
+      <div class="box inside">
+        <div class="box add-ap">
+          <div class="search">
+            <form>
+              <input type="text" class="input-search" placeholder="Search for Attack Pattern... " name="attackpattern">
+            </form>
+          </div>
+          <div class="ap-display">
+            {{ sections.name }}
+            </br>
+            </br>
+            {% for description in sections.description %} {{ description }}
+            </br>
+            {% endfor %}
+            </br>
+            <a href="{{ sections.url }}">{{ sections.url }}</a>
+          </div>
+          </br>
+          <form>
+            <input type="button" onclick="" value="ADD ATTACK PATTERN TO PLAYBOOK" class="ap-button">
+          </form>
+          </br>
+          </br>
+        </div>
+        <div class="box timeline">
+          <h3>Added Attack Patterns</h3>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Logon Scripts</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Bootkit</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Plist Modification</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">HISTCONTROL</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Screensaver</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Disabling Security Tools</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Login Item</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Indirect Command Execution</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">Source</div>
+          <div class="timeline_btn btn btn-report" onclick="" style="">.bash_profile and .bashrc</div>
+          </br>
+          <form>
+            <input type="button" value="CREATE NEW PLAYBOOK" class="pb-button">
+          </form>
+        </div>
+      </div>
+
+      <div class="box footer">
+        Created by Palo Alto Networks - Unit 42 <br><a style="color:#95989a" href="https://attack.mitre.org/wiki/Main_Page">Mitre ATT&amp;CK™</a> | <a style="color:#95989a" href="https://oasis-open.github.io/cti-documentation/stix/intro">STIX 2.0</a>
+      </div>
+    </div>
+
+    <script src="js/index.js"></script>
+  </body>
+
+</html>

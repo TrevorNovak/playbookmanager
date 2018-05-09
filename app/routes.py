@@ -9,6 +9,7 @@ from app.stix_processor import jsonToStix
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.query import MultiMatch, Match, Q
+import pprint
 import json
 
 test_playbook = []
@@ -29,6 +30,9 @@ def index():
     return render_template('index.html', title='Home', user=user, sections=sections, playbook=playbook, add=add_pattern)
 
 @app.route('/')
+def root_redirect():
+    return redirect(app_base_url+'create')
+
 @app.route('/playbookmanager/create', methods=['GET', 'POST'])
 def create():
     search = AttackPatternSearchForm(request.form)
@@ -152,14 +156,17 @@ def set_current(current):
 
 @app.route('/_create_playbook')
 def create_playbook():
+    pp = pprint.PrettyPrinter(indent=4)
     if len(test_playbook) == 0:
         return redirect('playbookmanager/create')
     else:
+        pp.pprint(test_playbook)
         pb = jsonToStix(test_playbook)
+        pp.pprint(pb)
         pb = pb.serialize()
-        pbd = json.loads(pb)
-        test_playbook.clear()
-        return render_template('playbook.html', pb=pbd['objects'])
+        # pbd = json.loads(pb)
+        clear_playbook()
+        return render_template('playbook.html', pb=pb)
 
 @app.route('/playbookmanager/search', methods=['GET', 'POST'])
 def do_search():
@@ -203,6 +210,11 @@ def search_results(search):
             print("Sections: \n")
             print(sections)
             return redirect('/playbookmanager/create')
+    else:
+        flash("You didn't enter anything.")
+        section.clear()
+        return redirect('/playbookmanager/create')
+
 #Credential Dumping
     if search.data['search'] == '':
         print('Empty')

@@ -1,7 +1,40 @@
 <html>
-<head></head>
-<body>
 
-    {{ pb }}
-</body>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/themes.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Jura:300|Rajdhani|Inconsolata" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+      <div class="box header">
+        <span>PLAYBOOK MANAGER</span>
+      </div>
+
+      <div class="box sidebar">
+        <img src="{{ url_for('static', filename='images/u42logo.png') }}">
+        <span>NAVIGATION</span>
+        <br>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">HOME</div>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">LOGIN</div>
+        <div class="btn playbook" id="playbook_oilrig" onclick="">VIEWER</div>
+        <a href="{{ url_for('create') }}"><div class="btn playbook" id="playbook_oilrig" onclick="">CREATOR</div></a>
+        </br>
+      </div>
+      <div class="box inside">
+          <div class="pattern-display">
+            {{ pb }}
+        </div>
+      </div>
+
+      <div class="box footer">
+        Created by Palo Alto Networks - Unit 42 <br><a style="color:#95989a" href="https://attack.mitre.org/wiki/Main_Page">Mitre ATT&amp;CK™</a> | <a style="color:#95989a" href="https://oasis-open.github.io/cti-documentation/stix/intro">STIX 2.0</a>
+      </div>
+    </div>
+
+    <script src="js/index.js"></script>
+  </body>
+
 </html>

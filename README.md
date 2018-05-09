@@ -17,7 +17,7 @@ If you are windows then you are on your own. Sorry :(
 * Clone repo, install virtualenv, install python dependencies:
 
 ```
-git clone https://github.com/TrevorNovak/playbookmanager`
+git clone https://github.com/TrevorNovak/playbookmanager
 cd playbookmanager
 python3 -m virtualenv venv 
 source ./venv/bin/activate 

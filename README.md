@@ -1,6 +1,10 @@
 # playbookmanager
 Open Source Repository for the Palo Alto Playbook Manager Application.
 
+## Notes:
+
+This project is not complete and there are still a few pieces left. Documentation will be written more thoroughly in the next couple of days in addition to finishing the last pieces, cleaning things up, and working out all bugs.
+
 ## Installation
 
 If you are windows then you are on your own. Sorry :(

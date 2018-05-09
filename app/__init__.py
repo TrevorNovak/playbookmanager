@@ -2,6 +2,8 @@ from flask import Flask
 from .config import Config
 from flask_restful import reqparse, Resource, Api
 from flask_cors import CORS
+from elasticsearch_dsl.query import MultiMatch, Match
+from elasticsearch_dsl import Search
 import requests
 import json
 
@@ -13,7 +15,10 @@ api = Api(app)
 parser = reqparse.RequestParser()
 class Search(Resource):
 
+
     def get(self):
+        client = Elasticsearch()
+        s = Search(using=client)
         # parse the query: ?q=[something]
         parser.add_argument('q')
         query_string = parser.parse_args()

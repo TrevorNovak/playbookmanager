@@ -1,10 +1,14 @@
 from flask import render_template, flash, redirect, url_for, jsonify, abort, request
 from .attackpatterns import *
+from .config import api_base_url, app_base_url, es_base_url
 from app import app
 from app.forms import LoginForm, AttackPatternSearchForm
 from app.util import formats, extract
 from app.playbook import Playbook, add_playbook, add_pattern, playbooks, playbook
 from app.stix_processor import jsonToStix
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
+from elasticsearch_dsl.query import MultiMatch, Match, Q
 import json
 
 test_playbook = []
@@ -117,7 +121,7 @@ def add_attack_pattern():
         test_playbook.append(c)
     section.clear()
     current_pattern.clear()
-    return redirect(config.app_base_url+'create')
+    return redirect(app_base_url+'create')
 
 @app.route('/_remove_pattern/<int:pattern_id>')
 def remove_attack_pattern(pattern_id):
@@ -126,7 +130,7 @@ def remove_attack_pattern(pattern_id):
         print("Error. Playbook is empty.")
     else:
         print("Attack Pattern Removed: " + str(test_playbook.pop(pattern_id)))
-        return redirect(config.app_base_url + 'create')
+        return redirect(app_base_url + 'create')
 
 @app.route('/_clear_playbook')
 def clear_playbook():
@@ -165,6 +169,7 @@ def do_search():
 
 @app.route('/results')
 def search_results(search):
+    client = Elasticsearch()
     results = []
     #print(load_attack_patterns())
     #print("ATTACK PATTERNS")
@@ -172,16 +177,24 @@ def search_results(search):
     searchstring = search.data['search']
     print("Search String: " + searchstring)
     if searchstring:
-        pattern = search_attack_patterns(searchstring, attack_patterns)
-        if not pattern:
-            print("ERROR")
-        else:
-            objects = pattern
-            sections = extract(objects)
-            set_section(sections)
-            set_current(pattern)
-            print(section)
-
+        #pattern = search_attack_patterns(searchstring, attack_patterns)
+        q = Q("match", name=searchstring)
+        s = Search().using(client).query(q)
+        print(s)
+        response = s.execute()
+        print(response)
+        # if not pattern:
+        #     print("ERROR")
+        # else:
+        count = 0
+        print('Total %d hits found.' % response.hits.total)
+        pattern = response[0].to_dict()
+        objects = pattern
+        sections = extract(objects)
+        set_section(sections)
+        set_current(pattern)
+        print(section)
+#Credential Dumping
     if search.data['search'] == '':
         print('Empty')
 
@@ -193,6 +206,36 @@ def search_results(search):
         print("Sections: \n")
         print(sections)
         return redirect('/playbookmanager/create')
+
+"""
+    client = Elasticsearch()
+    results = []
+    #print(load_attack_patterns())
+    #print("ATTACK PATTERNS")
+    #print(attack_patterns)
+    searchstring = search.data['search']
+    print("Search String: " + searchstring)
+    if searchstring:
+        #pattern = search_attack_patterns(searchstring, attack_patterns)
+        q = Q("multi_match", type='cross_fields', query=searchstring, use_dis_max=False, fields=['name', 'description'])
+        s = Search().using(client).query(q)
+        print(s)
+        response = s.execute()
+        print(response)
+        # if not pattern:
+        #     print("ERROR")
+        # else:
+        for hit in s:
+            print("HERE")
+            print(hit.name)
+            print(hit.description)
+
+
+                    # for hit in response:
+                    # # for hit in s:
+                    #     print(hit.name)
+                    #     print(hit.description)
+            """
 
 @app.route('/playbookmanager/list')
 def list_pattern():

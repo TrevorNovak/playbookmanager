@@ -12,5 +12,5 @@ index::
 
 .PHONY=backend
 backend::
-	python appsetup.py
+	python ../appsetup.py
 	flask run

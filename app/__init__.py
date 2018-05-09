@@ -1,8 +1,7 @@
 from flask import Flask
-from config import Config
+from .config import Config
 from flask_restful import reqparse, Resource, Api
 from flask_cors import CORS
-from . import config
 import requests
 import json
 

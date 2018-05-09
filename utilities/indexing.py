@@ -2,7 +2,8 @@ import os
 import glob
 import json
 from elasticsearch_dsl.connections import connections
-from elasticsearch_dsl import DocType, Text, Date, Search, MultiSearch
+import elasticsearch_dsl as dsl
+from elasticsearch_dsl import analyzer, tokenizer, Index, DocType, Text, Date, Search, MultiSearch
 from elasticsearch.helpers import bulk
 from elasticsearch import Elasticsearch
 
@@ -11,9 +12,9 @@ connections.create_connection()
 class AttackPatternIndex(DocType):
     name = Text()
     description = Text()
-    kill_chain_phases = Text()
-    external_references = Text()
-    object_marking_refs = Text()
+    # kill_chain_phases = None
+    # external_references = dsl.Nested()
+    # object_marking_refs = dsl.Nested()
     created = Text()
     created_by_ref = Text()
     pid = Text()
@@ -25,7 +26,7 @@ class AttackPatternIndex(DocType):
 
 def indexing(pattern, count):
     obj = AttackPatternIndex(
-        meta={'_id': count},
+        meta={'id': count},
         name = pattern['name'],
         description = pattern['description'],
         kill_chain_phases = pattern['kill_chain_phases'],
@@ -56,8 +57,27 @@ def load_attack_patterns():
                 print("Could not append." + doc)
     return attack_pat
 
+edge_ngram_analyzer = dsl.analyzer(
+    'edge_ngram_analyzer',
+    type='custom',
+    tokenizer='standard',
+    filter=[
+        'lowercase',
+        dsl.token_filter(
+            'edge_ngram_filter', type='edgeNGram',
+            min_gram=1, max_gram=20
+        )
+    ]
+)
+
 def bulk_indexing():
-    AttackPatternIndex.init(index='attack-pattern')
+    ap_index = Index('attack-patterns')
+    ap_index.settings(number_of_shards=1)
+    ap_index.doc_type(AttackPatternIndex)
+    ap_index.analyzer(edge_ngram_analyzer)
+    ap_index.create()
+    #AttackPatternIndex.init(index='attack-pattern')
+    #index.analyzer(analyzer('default', tokenizer='standard', filter=['english...']))
     es = Elasticsearch()
     attack_patterns = load_attack_patterns()
     bulk(client=es, actions=(indexing(p[0], p[1]) for p in attack_patterns))

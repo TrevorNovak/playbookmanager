@@ -1,5 +1,5 @@
 # playbookmanager
-Open Source Repository for the Palo Alto Playbook Manager Application.
+Open Source Repository for the Palo Alto Networks Playbook Manager Application.
 
 ## Notes:
 

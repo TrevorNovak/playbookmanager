@@ -42,20 +42,32 @@
             <form method=post>
                 <!-- <div class="search"><p> -->
                 {{ form.search }}
-              <p><input type=submit value=Search>
+              <p><input class="ap-button" type=submit value=Search>
               <!-- </div> -->
             </form>
           </div>
           <div class="pattern-display">
-            {% if sections %}
-            {{ sections[0].name }}
-            </br>
-            </br>
-            {% for description in sections[0].description %} {{ description }}
-            </br>
-            {% endfor %}
-            </br>
-            <a href="{{ sections.url }}">{{ sections[0].url }}</a>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                  <center>{{ message }}</center>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+            {% if not messages %}
+              {% if sections %}
+              {{ sections[0].name }}
+              </br>
+              </br>
+              {% for description in sections[0].description %} {{ description }}
+              </br>
+              {% endfor %}
+              </br>
+              <a href="{{ sections.url }}">{{ sections[0].url }}</a>
+              {% endif %}
             {% endif %}
           </div>
           </br>

@@ -193,6 +193,18 @@ input[type=text] {
     cursor: pointer;
 }
 
+.search-button {
+    background-color: #ef9124;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-family: 'Rajdhani', sans-serif;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .pb-button {
     background-color: #ef9124;
     border: none;

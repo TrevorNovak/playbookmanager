@@ -16,7 +16,7 @@ section = []
 current_pattern = []
 #attack_patterns = []
 
-@app.route('/')
+
 @app.route('/index')
 def index():
     user = {'username': 'Trevor'}
@@ -28,6 +28,7 @@ def index():
     sections = extract(objects)
     return render_template('index.html', title='Home', user=user, sections=sections, playbook=playbook, add=add_pattern)
 
+@app.route('/')
 @app.route('/playbookmanager/create', methods=['GET', 'POST'])
 def create():
     search = AttackPatternSearchForm(request.form)
@@ -152,12 +153,13 @@ def set_current(current):
 @app.route('/_create_playbook')
 def create_playbook():
     if len(test_playbook) == 0:
-        return redirect('playbookmanagr/create')
+        return redirect('playbookmanager/create')
     else:
         pb = jsonToStix(test_playbook)
         pb = pb.serialize()
+        pbd = json.loads(pb)
         test_playbook.clear()
-        return render_template('playbook.html', pb=pb)
+        return render_template('playbook.html', pb=pbd['objects'])
 
 @app.route('/playbookmanager/search', methods=['GET', 'POST'])
 def do_search():
@@ -169,6 +171,7 @@ def do_search():
 
 @app.route('/results')
 def search_results(search):
+    section.clear()
     client = Elasticsearch()
     results = []
     #print(load_attack_patterns())
@@ -183,29 +186,33 @@ def search_results(search):
         print(s)
         response = s.execute()
         print(response)
-        # if not pattern:
-        #     print("ERROR")
-        # else:
-        count = 0
-        print('Total %d hits found.' % response.hits.total)
-        pattern = response[0].to_dict()
-        objects = pattern
-        sections = extract(objects)
-        set_section(sections)
-        set_current(pattern)
-        print(section)
+        if not response:
+            flash('No results found!')
+            section.clear()
+            return redirect('/playbookmanager/create')
+        else:
+            count = 0
+            print('Total %d hits found.' % response.hits.total)
+            pattern = response[0].to_dict()
+            objects = pattern
+            sections = extract(objects)
+            set_section(sections)
+            set_current(pattern)
+            print(section)
+            # display results
+            print("Sections: \n")
+            print(sections)
+            return redirect('/playbookmanager/create')
 #Credential Dumping
     if search.data['search'] == '':
         print('Empty')
-
-    if not results:
-        flash('No results found!')
-        return redirect('/playbookmanager/create')
-    else:
-        # display results
-        print("Sections: \n")
-        print(sections)
-        return redirect('/playbookmanager/create')
+    #
+    # if not results:
+    # else:
+    #     # display results
+    #     print("Sections: \n")
+    #     print(sections)
+    #     return redirect('/playbookmanager/create')
 
 """
     client = Elasticsearch()

@@ -9,12 +9,18 @@ from elasticsearch import Elasticsearch
 
 connections.create_connection()
 
+"""
+This file is primarily responsible for defining and indexing documents
+(e.g. attack patterns and playbooks)
+"""
+
 class AttackPatternIndex(DocType):
+    """
+    This class defines the Attack Pattern Index and associated mappings by
+    inheriting from the elasticsearch-dsl DocType.
+    """
     name = Text()
     description = Text()
-    # kill_chain_phases = None
-    # external_references = dsl.Nested()
-    # object_marking_refs = dsl.Nested()
     created = Text()
     created_by_ref = Text()
     pid = Text()
@@ -25,6 +31,10 @@ class AttackPatternIndex(DocType):
         index = 'attack-patterns'
 
 def indexing(pattern, count):
+    """
+    This function takes a given attack pattern and maps it's values to the
+    object fields used to represent this attack pattern.
+    """
     obj = AttackPatternIndex(
         meta={'id': count},
         name = pattern['name'],
@@ -42,6 +52,13 @@ def indexing(pattern, count):
     return obj.to_dict(include_meta=True)
 
 def load_attack_patterns():
+    """
+    Reads in the modified attack patterns and stores them in a list as a member
+    of a pair. The attack pattern dictionary is the first member of the pair
+    and its desired index number is the second member of the tuple.
+
+    returns the list of pairs -> (attack_pattern, id)
+    """
     attack_pat = []
     count = 0
     filepath_read = './modified-attack-patterns/*.json'
@@ -57,52 +74,43 @@ def load_attack_patterns():
                 print("Could not append." + doc)
     return attack_pat
 
-edge_ngram_analyzer = dsl.analyzer(
-    'edge_ngram_analyzer',
-    type='custom',
-    tokenizer='standard',
-    filter=[
-        'lowercase',
-        dsl.token_filter(
-            'edge_ngram_filter', type='edgeNGram',
-            min_gram=1, max_gram=20
-        )
-    ]
-)
-
 def bulk_indexing():
-    ap_index = Index('attack-patterns')
-    ap_index.settings(number_of_shards=1)
-    ap_index.doc_type(AttackPatternIndex)
-    ap_index.analyzer(edge_ngram_analyzer)
-    ap_index.create()
-    #AttackPatternIndex.init(index='attack-pattern')
-    #index.analyzer(analyzer('default', tokenizer='standard', filter=['english...']))
-    es = Elasticsearch()
-    attack_patterns = load_attack_patterns()
-    bulk(client=es, actions=(indexing(p[0], p[1]) for p in attack_patterns))
-    print("Success")
+    """
+    This function is responsible for bulk indexing the attack patterns. First,
+    we declare an edge_ngram_analyzer which is the primary driver for 'Search As You Type'.
+
+    Next we define the attack-pattern index that we want to create (e.g. settings, doc type, analyzer).
+    Then, we load the attack pattern/index pair list generated from load_attack_patterns() and use
+    the elasticsearch-dsl bulk indexing function to do the heavy lifting.
+    """
+    edge_ngram_analyzer = dsl.analyzer(
+        'edge_ngram_analyzer',
+        type='custom',
+        tokenizer='standard',
+        filter=[
+            'lowercase',
+            dsl.token_filter(
+                'edge_ngram_filter', type='edgeNGram',
+                min_gram=1, max_gram=20
+            )
+        ]
+    )
+
+    try:
+        ap_index = Index('attack-patterns')
+        ap_index.settings(number_of_shards=1)
+        ap_index.doc_type(AttackPatternIndex)
+        ap_index.analyzer(edge_ngram_analyzer)
+        ap_index.create()
+        es = Elasticsearch()
+        attack_patterns = load_attack_patterns()
+        #p[0] is the attack pattern dictionary and p[1] is the index number.
+        bulk(client=es, actions=(indexing(p[0], p[1]) for p in attack_patterns))
+        print("Success")
+    except:
+        print("Bulk Indexing has failed...")
 
 def search_pattern(name):
     s = Search().filter('term', name=name)
     response = s.execute()
     return response
-
-#bulk_indexing()
-
-"""
-["name", "description", "kill_chain_phases", "external_references",
-"object_marking_refs", "created", "created_by_ref", "id", "modified", "type"]
-{
-    "name": "Execution through Module Load",
-    "description": "The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows Native API which is called from functions like CreateProcess(), LoadLibrary(), etc. of the Win32 API. (Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n*via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n*via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n*via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n*via <code><file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"></code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries can use this functionality as a way to execute arbitrary code on a system.\n\nDetection: Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.\n\nPlatforms: Windows\n\nData Sources: Process Monitoring, API monitoring, File monitoring, DLL monitoring\n\nPermissions Required: User\n\nContributors: Stefan Kanthak",
-    "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "execution"}],
-    "external_references": [{"url": "https://attack.mitre.org/wiki/Technique/T1129", "source_name": "mitre-attack", "external_id": "T1129"}, {"description": "Wikipedia. (2017, January 31). Microsoft Windows library files. Retrieved February 13, 2017.", "source_name": "Wikipedia Windows Library Files", "url": "https://en.wikipedia.org/wiki/Microsoft%20Windows%20library%20files"}],
-    "object_marking_refs": ["marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"],
-    "created": "2017-05-31T21:31:40.542Z",
-    "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-    "id": "attack-pattern--0a5231ec-41af-4a35-83d0-6bdf11f28c65",
-    "modified": "2018-04-18T17:59:24.739Z",
-    "type": "attack-pattern"
-}
-"""

@@ -4,7 +4,7 @@ help::
 
 .PHONY=backend
 backend::
-	# python setup.py
+	python setup.py
 	export FLASK_APP=playbookmanager.py
 	export FLASK_ENV=development
 	flask run

@@ -64,7 +64,7 @@ def getPlaybook(playbook_id):
 
 @app.route('/playbookmanager/api/v1/attack-patterns', methods=['GET'])
 def get_attack_patterns():
-    return jsonify({'attack-patterns': attack_patterns})
+    return jsonify({'trevor': attack_patterns})
 
 @app.route('/playbookmanager/api/v1/attack-patterns/<int:pattern_id>', methods=['GET'])
 def get_attack_pattern(pattern_id):
@@ -72,6 +72,41 @@ def get_attack_pattern(pattern_id):
     if len(pattern) == 0:
         abort(404)
     return jsonify(pattern)
+
+# @app.route('/api/v1/search', methods=['GET', 'POST'])
+# def get():
+#     # parse the query: ?q=[something]
+#     print("IN HERE")
+#     parser.add_argument('q')
+#     query_string = parser.parse_args()
+#     # base search URL
+#     url = config.es_base_url['attack-patterns']+'/_search'
+#     # Query Elasticsearch
+#     query = {
+#         "query": {
+#             "multi_match": {
+#                 "fields": ["name", "producer", "description", "styles"],
+#                 "query": query_string['q'],
+#                 "type": "cross_fields",
+#                 "use_dis_max": False
+#             }
+#         },
+#         "size": 100
+#     }
+#     resp = requests.post(url, data=json.dumps(query))
+#     data = resp.json()
+#     # Build an array of results
+#     pattern = []
+#     for hit in data['hits']['hits']:
+#         pattern = hit['_source']
+#         pattern['id'] = hit['_id']
+#         patterns.append(pattern)
+#     print("OUT THERE")
+#     return jsonify(patterns)
+
+@app.route('/api/v1/this', methods=['GET'])
+def this():
+    return jsonify({'this': 'example'})
 
 @app.route('/_add_pattern')
 def add_attack_pattern():
@@ -82,7 +117,7 @@ def add_attack_pattern():
         test_playbook.append(c)
     section.clear()
     current_pattern.clear()
-    return redirect('playbookmanager/create')
+    return redirect(config.app_base_url+'create')
 
 @app.route('/_remove_pattern/<int:pattern_id>')
 def remove_attack_pattern(pattern_id):
@@ -91,7 +126,7 @@ def remove_attack_pattern(pattern_id):
         print("Error. Playbook is empty.")
     else:
         print("Attack Pattern Removed: " + str(test_playbook.pop(pattern_id)))
-        return redirect('playbookmanager/create')
+        return redirect(config.app_base_url + 'create')
 
 @app.route('/_clear_playbook')
 def clear_playbook():

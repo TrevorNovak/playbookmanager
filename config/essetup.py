@@ -2,8 +2,8 @@ import processing, indexing
 import os
 
 def setup():
-    modified_ap_path = 'utilities/modified-attack-patterns/'
-    ap_path = 'utilities/attack-patterns/'
+    modified_ap_path = 'modified-attack-patterns/'
+    ap_path = 'attack-patterns/'
 
     # check to see if attack patterns have already been transformed
     if not os.path.exists(modified_ap_path):

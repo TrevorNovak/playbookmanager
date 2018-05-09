@@ -40,17 +40,15 @@ make index
 make backend
 ```
 
-```
-make elasticsearch sets up the elasticsearch instance. This can be used whenever you want to start elasticsearch
-```
 
-```
-make index creates the necessary indexes, transforms attack patterns, and bulk indexes them. This is not used after the initital installation
-```
+`make elasticsearch` sets up the elasticsearch instance. This can be used whenever you want to start elasticsearch
 
-```
-make backend sets up and starts the flask server. This can be used whenever you want to start flask.
-```
+
+`make index` creates the necessary indexes, transforms attack patterns, and bulk indexes them. This is not used after the initital installation
+
+
+`make backend` sets up and starts the flask server. This can be used whenever you want to start flask.
+
 
 Point your browser to:
 

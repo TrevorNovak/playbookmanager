@@ -26,6 +26,7 @@ pip install -r requirements.txt
 Now, open up a second terminal window. In this new window:
 
 ```
+source ./venv/bin/activate
 cd config
 make elasticsearch
 ```

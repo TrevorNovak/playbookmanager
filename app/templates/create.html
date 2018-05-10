@@ -7,7 +7,6 @@
   </head>
 
   <body>
-
     <div class="wrapper">
       <div class="box header">
         <span>PLAYBOOK MANAGER</span>
@@ -17,9 +16,9 @@
         <img src="{{ url_for('static', filename='images/u42logo.png') }}">
         <span>NAVIGATION</span>
         <br>
-        <div class="btn playbook" id="playbook_oilrig" onclick="">HOME</div>
-        <div class="btn playbook" id="playbook_oilrig" onclick="">LOGIN</div>
-        <div class="btn playbook" id="playbook_oilrig" onclick="">VIEWER</div>
+        <div class="btn playbook"  onclick="">HOME</div>
+        <div class="btn playbook"  onclick="">LOGIN</div>
+        <div class="btn playbook"  onclick="">VIEWER</div>
         <a href="{{ url_for('create') }}"><div class="btn playbook" onclick="">CREATOR</div></a>
         </br>
       </div>
@@ -67,6 +66,9 @@
               {% endfor %}
               </br>
               <a href="{{ sections.url }}">{{ sections[0].url }}</a>
+              {% endif %}
+              {% if not sections %}
+              <center>You should totally build a new playbook. The internet needs you!</center>
               {% endif %}
             {% endif %}
           </div>

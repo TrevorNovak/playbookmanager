@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app)
 api = Api(app)
+app.jinja_env.auto_reload = True
 
 parser = reqparse.RequestParser()
 class Search(Resource):

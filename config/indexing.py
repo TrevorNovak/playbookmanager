@@ -32,7 +32,7 @@ class AttackPatternIndex(DocType):
 
 def indexing(pattern, count):
     """
-    This function takes a given attack pattern and maps it's values to the
+    This function takes a given attack pattern and maps its values to the
     object fields used to represent this attack pattern.
     """
     obj = AttackPatternIndex(

@@ -3,7 +3,7 @@ import datetime
 from stix2validator import validate_string, print_results
 import json
 
-def jsonToStix(playbook):
+def dictToStix(playbook):
 
     if len(playbook) > 0:
         bundle = stix2.Bundle(playbook[0])

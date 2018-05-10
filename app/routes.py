@@ -1,11 +1,12 @@
 from flask import render_template, flash, redirect, url_for, jsonify, abort, request
-from .attackpatterns import *
-from .config import api_base_url, app_base_url, es_base_url
+
 from app import app
+from app.attackpatterns import *
+from app.config import api_base_url, app_base_url, es_base_url
 from app.forms import LoginForm, AttackPatternSearchForm
 from app.util import formats, extract
 from app.playbook import Playbook, add_playbook, add_pattern, playbooks, playbook
-from app.stix_processor import jsonToStix
+from app.stix_processor import dictToStix
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.query import MultiMatch, Match, Q
@@ -17,6 +18,9 @@ section = []
 current_pattern = []
 #attack_patterns = []
 
+"""
+Defines the routes and views used within the application. Work in progress, excuse the mess.
+"""
 
 @app.route('/index')
 def index():
@@ -161,7 +165,7 @@ def create_playbook():
         return redirect('playbookmanager/create')
     else:
         pp.pprint(test_playbook)
-        pb = jsonToStix(test_playbook)
+        pb = dictToStix(test_playbook)
         pp.pprint(pb)
         pb = pb.serialize()
         # pbd = json.loads(pb)

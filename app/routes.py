@@ -13,7 +13,7 @@ from elasticsearch_dsl.query import MultiMatch, Match, Q
 import pprint
 import json
 
-test_playbook = []
+playbook = []
 section = []
 current_pattern = []
 #attack_patterns = []
@@ -40,13 +40,13 @@ def root_redirect():
 @app.route('/playbookmanager/create', methods=['GET', 'POST'])
 def create():
     search = AttackPatternSearchForm(request.form)
-    length = len(test_playbook)
+    length = len(playbook)
     if request.method == 'POST':
         return search_results(search)
 
     print("Create Sections: \n")
     print(section)
-    return render_template('create.html', title='Create', sections=section, playbook=test_playbook, form=search, length=length)
+    return render_template('create.html', title='Create', sections=section, playbook=playbook, form=search, length=length)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,8 +57,6 @@ def login():
         return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
-# DATA LIST FOR SEARCH BAR
-
 @app.route('/playbookmanager/api/v1/playbooks', methods=['GET'])
 def get_playbooks():
     add_pattern(pattern1)
@@ -66,7 +64,6 @@ def get_playbooks():
     add_playbook(playbook)
     add_playbook(playbook)
     return jsonify({'playbooks': playbooks})
-# render_template('playbook.html', title='Playbooks', playbook=playbook)
 
 @app.route('/playbookmanager/api/v1/playbooks/<int:playbook_id>', methods=['GET'])
 def getPlaybook(playbook_id):
@@ -86,37 +83,6 @@ def get_attack_pattern(pattern_id):
         abort(404)
     return jsonify(pattern)
 
-# @app.route('/api/v1/search', methods=['GET', 'POST'])
-# def get():
-#     # parse the query: ?q=[something]
-#     print("IN HERE")
-#     parser.add_argument('q')
-#     query_string = parser.parse_args()
-#     # base search URL
-#     url = config.es_base_url['attack-patterns']+'/_search'
-#     # Query Elasticsearch
-#     query = {
-#         "query": {
-#             "multi_match": {
-#                 "fields": ["name", "producer", "description", "styles"],
-#                 "query": query_string['q'],
-#                 "type": "cross_fields",
-#                 "use_dis_max": False
-#             }
-#         },
-#         "size": 100
-#     }
-#     resp = requests.post(url, data=json.dumps(query))
-#     data = resp.json()
-#     # Build an array of results
-#     pattern = []
-#     for hit in data['hits']['hits']:
-#         pattern = hit['_source']
-#         pattern['id'] = hit['_id']
-#         patterns.append(pattern)
-#     print("OUT THERE")
-#     return jsonify(patterns)
-
 @app.route('/api/v1/this', methods=['GET'])
 def this():
     return jsonify({'this': 'example'})
@@ -127,7 +93,7 @@ def add_attack_pattern():
     print(section)
     for c in current_pattern:
         print(c)
-        test_playbook.append(c)
+        playbook.append(c)
     section.clear()
     current_pattern.clear()
     return redirect(app_base_url+'create')
@@ -135,15 +101,15 @@ def add_attack_pattern():
 @app.route('/_remove_pattern/<int:pattern_id>')
 def remove_attack_pattern(pattern_id):
     print("REMOVE ATTACK PATTERN")
-    if len(test_playbook) == 0:
+    if len(playbook) == 0:
         print("Error. Playbook is empty.")
     else:
-        print("Attack Pattern Removed: " + str(test_playbook.pop(pattern_id)))
+        print("Attack Pattern Removed: " + str(playbook.pop(pattern_id)))
         return redirect(app_base_url + 'create')
 
 @app.route('/_clear_playbook')
 def clear_playbook():
-    test_playbook.clear()
+    playbook.clear()
     section.clear()
     current_pattern.clear()
     return redirect('playbookmanager/create')
@@ -161,11 +127,11 @@ def set_current(current):
 @app.route('/_create_playbook')
 def create_playbook():
     pp = pprint.PrettyPrinter(indent=4)
-    if len(test_playbook) == 0:
+    if len(playbook) == 0:
         return redirect('playbookmanager/create')
     else:
-        pp.pprint(test_playbook)
-        pb = dictToStix(test_playbook)
+        pp.pprint(playbook)
+        pb = dictToStix(playbook)
         pp.pprint(pb)
         pb = pb.serialize()
         # pbd = json.loads(pb)
@@ -185,13 +151,10 @@ def search_results(search):
     section.clear()
     client = Elasticsearch()
     results = []
-    #print(load_attack_patterns())
-    #print("ATTACK PATTERNS")
-    #print(attack_patterns)
+
     searchstring = search.data['search']
     print("Search String: " + searchstring)
     if searchstring:
-        #pattern = search_attack_patterns(searchstring, attack_patterns)
         q = Q("match", name=searchstring)
         s = Search().using(client).query(q)
         print(s)
@@ -219,50 +182,12 @@ def search_results(search):
         section.clear()
         return redirect('/playbookmanager/create')
 
-#Credential Dumping
     if search.data['search'] == '':
         print('Empty')
-    #
-    # if not results:
-    # else:
-    #     # display results
-    #     print("Sections: \n")
-    #     print(sections)
-    #     return redirect('/playbookmanager/create')
-
-"""
-    client = Elasticsearch()
-    results = []
-    #print(load_attack_patterns())
-    #print("ATTACK PATTERNS")
-    #print(attack_patterns)
-    searchstring = search.data['search']
-    print("Search String: " + searchstring)
-    if searchstring:
-        #pattern = search_attack_patterns(searchstring, attack_patterns)
-        q = Q("multi_match", type='cross_fields', query=searchstring, use_dis_max=False, fields=['name', 'description'])
-        s = Search().using(client).query(q)
-        print(s)
-        response = s.execute()
-        print(response)
-        # if not pattern:
-        #     print("ERROR")
-        # else:
-        for hit in s:
-            print("HERE")
-            print(hit.name)
-            print(hit.description)
-
-
-                    # for hit in response:
-                    # # for hit in s:
-                    #     print(hit.name)
-                    #     print(hit.description)
-            """
 
 @app.route('/playbookmanager/list')
 def list_pattern():
-    pb = test_playbook
+    pb = playbook
     return render_template('list.html', title='List', playbook=pb)
 
 @app.route('/parse')

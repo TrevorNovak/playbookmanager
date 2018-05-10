@@ -188,7 +188,7 @@ input[type=text] {
 }
 
 .ap-button {
-    background-color: #ef9124;
+    background-color: darkorange;
     border: none;
     color: white;
     padding: 16px 32px;
@@ -197,10 +197,14 @@ input[type=text] {
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+.ap-button:hover {
+  background-color: #ef9124;
 }
 
 .search-button {
-    background-color: #ef9124;
+    background-color: darkorange;
     border: none;
     color: white;
     padding: 16px 32px;
@@ -211,8 +215,12 @@ input[type=text] {
     cursor: pointer;
 }
 
+.search-button:hover {
+  background-color: #ef9124;
+}
+
 .pb-button {
-    background-color: #ef9124;
+    background-color: darkorange;
     border: none;
     color: white;
     padding: 16px 32px;
@@ -222,6 +230,10 @@ input[type=text] {
     margin: 4px 2px;
     width: 100%;
     cursor: pointer;
+}
+
+.pb-button:hover {
+  background-color: #ef9124;
 }
 
 .inside {
